@@ -55,7 +55,10 @@ export async function POST(request: Request) {
     .select()
     .single()
 
-  if (error) return NextResponse.json({ error: 'Failed to create call' }, { status: 500 })
+  if (error) {
+    console.error('Failed to create call', { code: error.code, message: error.message, details: error.details })
+    return NextResponse.json({ error: 'Failed to create call' }, { status: 500 })
+  }
 
   if (isInterestedOrCallback(data.status)) {
     try {
