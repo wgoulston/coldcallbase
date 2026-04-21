@@ -120,7 +120,7 @@ export default function ScriptPage() {
               <div className="script-block">
                 <span className="lbl">You say</span>
                 Good morning/afternoon, is that [Business Name]? This is [Your
-                Name] calling from 3aIT - may I speak with the owner for a
+                Name] calling - may I speak with the owner for a
                 moment?
               </div>
               <ul className="notes">
@@ -150,8 +150,8 @@ export default function ScriptPage() {
                 <span className="lbl">
                   If you&apos;re speaking to the owner
                 </span>
-                Hi, it&apos;s [Your Name] from 3aIT. I noticed your business may
-                be missing a modern website, and I wanted to reach out briefly.
+                Hi, it&apos;s [Your Name]. I noticed your business may
+                be missing a website, and I wanted to reach out briefly.
                 We build high-performing websites for local businesses - do you
                 have two minutes?
               </div>
@@ -197,8 +197,7 @@ export default function ScriptPage() {
             <div className="section-body">
               <div className="script-block">
                 <span className="lbl">You say</span>
-                At 3aIT, we build websites for local businesses focused on
-                performance and lead generation. Pricing starts from around{" "}
+                Pricing starts from around{" "}
                 <strong>£500–£800 for a straightforward static site</strong>, or{" "}
                 <strong>£800+ if you need something more interactive</strong> -
                 such as online booking, ecommerce, or custom enquiry workflows.
@@ -207,7 +206,7 @@ export default function ScriptPage() {
                 If helpful, I can put together a{" "}
                 <strong>free preview concept within a few days</strong> so you
                 can see what your updated site could look like before making any
-                decision.
+                decision. There will be a <strong> monthly maintenance plan from around £50/month </strong>for hosting and minor fixes.
               </div>
             </div>
           </div>
@@ -337,7 +336,7 @@ export default function ScriptPage() {
               <div className="script-block">
                 <span className="lbl">If not right now</span>
                 Not a problem at all - I&apos;ll send over a brief email so you
-                have my details from 3aIT. Thanks again for your time.
+                have my details. Thanks again for your time.
               </div>
               <ul className="notes">
                 <li>
