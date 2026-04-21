@@ -23,7 +23,7 @@ export default function MapView() {
   const [modalOpen, setModalOpen]       = useState(false)
   const [preset, setPreset]             = useState<PlacePreset | null>(null)
   const [existing, setExisting]         = useState<ColdCall | null>(null)
-  const [showHeatmap, setShowHeatmap]   = useState(true)
+  const [showHeatmap, setShowHeatmap]   = useState(false)
   const [filterStatus, setFilterStatus] = useState<CallStatus | 'all'>('all')
   const [mapsLoaded, setMapsLoaded]     = useState(false)
 
