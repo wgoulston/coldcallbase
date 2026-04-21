@@ -18,8 +18,8 @@ export default async function Dashboard() {
   }, {} as Record<CallStatus, number>)
 
   const recent = calls?.slice(0, 8) ?? []
-  const dueFollowUps = calls
-    ?.filter(c => c.follow_up_at && new Date(c.follow_up_at) <= new Date())
+  const scheduledFollowUps = calls
+    ?.filter(c => c.follow_up_at)
     .sort((a, b) => new Date(a.follow_up_at!).getTime() - new Date(b.follow_up_at!).getTime())
     .slice(0, 5) ?? []
 
@@ -93,19 +93,23 @@ export default async function Dashboard() {
         )}
       </div>
 
-      {/* Due follow-ups */}
+      {/* Scheduled follow-ups */}
       <div className="card">
         <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid var(--border)' }}>
-          <h2 className="font-display font-bold text-sm tracking-widest uppercase" style={{ color: 'var(--muted)' }}>Due Follow-ups</h2>
+          <h2 className="font-display font-bold text-sm tracking-widest uppercase" style={{ color: 'var(--muted)' }}>Scheduled Follow-ups</h2>
           <Link href="/calls" className="text-sm font-medium" style={{ color: 'var(--accent)' }}>Open calls →</Link>
         </div>
-        {dueFollowUps.length === 0 ? (
+        {scheduledFollowUps.length === 0 ? (
           <div className="px-6 py-8 text-sm" style={{ background: 'var(--surface2)', color: 'var(--muted)' }}>
-            No follow-ups due right now.
+            No follow-ups scheduled yet.
           </div>
         ) : (
           <div style={{ background: 'var(--surface2)' }}>
-            {dueFollowUps.map((call, i) => (
+            {scheduledFollowUps.map((call, i) => {
+              const followUpTs = new Date(call.follow_up_at!).getTime()
+              const nowTs = Date.now()
+              const isOverdue = followUpTs < nowTs
+              return (
               <Link
                 key={call.id}
                 href="/calls"
@@ -116,11 +120,16 @@ export default async function Dashboard() {
                   <p className="font-medium truncate" style={{ color: 'var(--text)' }}>{call.business_name}</p>
                   <p className="text-xs truncate mt-0.5" style={{ color: 'var(--muted)' }}>{call.address}</p>
                 </div>
-                <span className="text-xs shrink-0" style={{ color: 'var(--accent)' }}>
-                  {new Date(call.follow_up_at!).toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' })}
-                </span>
+                <div className="text-right shrink-0">
+                  <p className="text-xs" style={{ color: isOverdue ? 'var(--red)' : 'var(--accent)' }}>
+                    {new Date(call.follow_up_at!).toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' })}
+                  </p>
+                  <p className="text-[11px]" style={{ color: isOverdue ? 'var(--red)' : 'var(--muted)' }}>
+                    {isOverdue ? 'Overdue' : 'Upcoming'}
+                  </p>
+                </div>
               </Link>
-            ))}
+            )})}
           </div>
         )}
       </div>
