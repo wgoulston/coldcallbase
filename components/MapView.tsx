@@ -8,6 +8,7 @@ interface PlacePreset {
   business_name: string
   address: string
   phone?: string
+  website?: string
   lat: number
   lng: number
 }
@@ -74,13 +75,14 @@ export default function MapView() {
 
       const service = new google.maps.places.PlacesService(map)
       service.getDetails(
-        { placeId: e.placeId, fields: ['name', 'formatted_address', 'formatted_phone_number', 'geometry'] },
+        { placeId: e.placeId, fields: ['name', 'formatted_address', 'formatted_phone_number', 'website', 'geometry'] },
         (place, status) => {
           if (status === google.maps.places.PlacesServiceStatus.OK && place?.geometry?.location) {
             setPreset({
               business_name: place.name ?? '',
               address:       place.formatted_address ?? '',
               phone:         place.formatted_phone_number,
+              website:       place.website,
               lat:           place.geometry.location.lat(),
               lng:           place.geometry.location.lng(),
             })
@@ -115,6 +117,7 @@ export default function MapView() {
           business_name: place.name,
           address:       place.formatted_address ?? '',
           phone:         place.formatted_phone_number,
+          website:       place.website,
           lat:           place.geometry.location.lat(),
           lng:           place.geometry.location.lng(),
         })

@@ -6,6 +6,7 @@ interface PlacePreset {
   business_name: string
   address: string
   phone?: string
+  website?: string
   lat: number
   lng: number
 }
@@ -55,7 +56,8 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
         ...empty,
         business_name: preset.business_name,
         address:       preset.address,
-        phone:         preset.phone ?? '',
+        phone:         preset.phone    ?? '',
+        website:       preset.website  ?? '',
         lat:           preset.lat,
         lng:           preset.lng,
         called_at:     new Date().toISOString().slice(0, 16),
