@@ -18,13 +18,13 @@ export default function MapView() {
   const heatmapRef    = useRef<google.maps.visualization.HeatmapLayer | null>(null)
   const markersRef    = useRef<google.maps.Marker[]>([])
 
-  const [calls, setCalls]           = useState<ColdCall[]>([])
-  const [modalOpen, setModalOpen]   = useState(false)
-  const [preset, setPreset]         = useState<PlacePreset | null>(null)
-  const [existing, setExisting]     = useState<ColdCall | null>(null)
-  const [showHeatmap, setShowHeatmap] = useState(true)
+  const [calls, setCalls]               = useState<ColdCall[]>([])
+  const [modalOpen, setModalOpen]       = useState(false)
+  const [preset, setPreset]             = useState<PlacePreset | null>(null)
+  const [existing, setExisting]         = useState<ColdCall | null>(null)
+  const [showHeatmap, setShowHeatmap]   = useState(true)
   const [filterStatus, setFilterStatus] = useState<CallStatus | 'all'>('all')
-  const [mapsLoaded, setMapsLoaded] = useState(false)
+  const [mapsLoaded, setMapsLoaded]     = useState(false)
 
   const fetchCalls = useCallback(async () => {
     const res = await fetch('/api/calls')
@@ -40,7 +40,6 @@ export default function MapView() {
       version: 'weekly',
       libraries: ['places', 'visualization'],
     })
-
     loader.load().then(() => setMapsLoaded(true))
   }, [])
 
@@ -61,14 +60,13 @@ export default function MapView() {
 
     mapObj.current = map
 
-    // Try geolocation for default center
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(pos => {
         map.setCenter({ lat: pos.coords.latitude, lng: pos.coords.longitude })
       })
     }
 
-    // Click on a business POI
+    // Click on a Google Maps POI
     map.addListener('click', (e: google.maps.MapMouseEvent & { placeId?: string }) => {
       if (!e.placeId) return
       e.stop()
@@ -80,10 +78,10 @@ export default function MapView() {
           if (status === google.maps.places.PlacesServiceStatus.OK && place?.geometry?.location) {
             setPreset({
               business_name: place.name ?? '',
-              address: place.formatted_address ?? '',
-              phone: place.formatted_phone_number,
-              lat: place.geometry.location.lat(),
-              lng: place.geometry.location.lng(),
+              address:       place.formatted_address ?? '',
+              phone:         place.formatted_phone_number,
+              lat:           place.geometry.location.lat(),
+              lng:           place.geometry.location.lng(),
             })
             setExisting(null)
             setModalOpen(true)
@@ -92,7 +90,7 @@ export default function MapView() {
       )
     })
 
-    // Search box
+    // Search box — selecting a result navigates AND opens the log modal
     const input = document.getElementById('map-search') as HTMLInputElement
     const searchBox = new google.maps.places.SearchBox(input)
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input)
@@ -100,12 +98,28 @@ export default function MapView() {
     searchBox.addListener('places_changed', () => {
       const places = searchBox.getPlaces()
       if (!places?.length) return
+
+      // Pan/zoom to the result
       const bounds = new google.maps.LatLngBounds()
       places.forEach(p => {
         if (p.geometry?.viewport) bounds.union(p.geometry.viewport)
         else if (p.geometry?.location) bounds.extend(p.geometry.location)
       })
       map.fitBounds(bounds)
+
+      // If the result is a named place with a location, open the log modal
+      const place = places[0]
+      if (place.geometry?.location && place.name) {
+        setPreset({
+          business_name: place.name,
+          address:       place.formatted_address ?? '',
+          phone:         place.formatted_phone_number,
+          lat:           place.geometry.location.lat(),
+          lng:           place.geometry.location.lng(),
+        })
+        setExisting(null)
+        setModalOpen(true)
+      }
     })
 
     heatmapRef.current = new google.maps.visualization.HeatmapLayer({
@@ -119,12 +133,10 @@ export default function MapView() {
   useEffect(() => {
     if (!mapObj.current || !heatmapRef.current) return
 
-    // Clear old markers
     markersRef.current.forEach(m => m.setMap(null))
     markersRef.current = []
 
     const filtered = filterStatus === 'all' ? calls : calls.filter(c => c.status === filterStatus)
-
     const heatPoints: google.maps.LatLng[] = []
 
     filtered.forEach(call => {
@@ -159,6 +171,19 @@ export default function MapView() {
     heatmapRef.current.setMap(showHeatmap ? mapObj.current : null)
   }, [calls, filterStatus, showHeatmap, mapsLoaded])
 
+  const openManualAdd = () => {
+    if (!mapObj.current) return
+    const center = mapObj.current.getCenter()
+    setPreset({
+      business_name: '',
+      address: '',
+      lat: center?.lat() ?? 51.505,
+      lng: center?.lng() ?? -0.09,
+    })
+    setExisting(null)
+    setModalOpen(true)
+  }
+
   const STATUSES: { value: CallStatus | 'all'; label: string }[] = [
     { value: 'all',            label: 'All' },
     { value: 'pending',        label: 'Pending' },
@@ -170,18 +195,17 @@ export default function MapView() {
 
   return (
     <div className="relative h-[calc(100vh-4rem)]">
-      {/* Hidden search input — Google Maps will move it into the map */}
+      {/* Hidden search input — Google Maps moves it into the map controls */}
       <input
         id="map-search"
         type="text"
         placeholder="Search businesses…"
-        className="hidden-map-search absolute z-10 mt-3 ml-3 px-4 py-2.5 bg-white rounded-lg shadow-md border border-gray-200 text-sm w-72 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        className="hidden-map-search absolute z-10 mt-3 ml-3 px-4 py-2.5 bg-white rounded-lg shadow-md border border-gray-200 text-sm w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         style={{ display: 'block' }}
       />
 
       {/* Controls overlay */}
       <div className="absolute top-3 right-3 z-10 flex flex-col gap-2">
-        {/* Heatmap toggle */}
         <button
           onClick={() => setShowHeatmap(h => !h)}
           className={`px-3 py-1.5 rounded-lg text-xs font-medium shadow-md border transition-colors ${
@@ -193,7 +217,6 @@ export default function MapView() {
           {showHeatmap ? 'Heatmap ON' : 'Heatmap OFF'}
         </button>
 
-        {/* Status filter */}
         <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
           {STATUSES.map(s => (
             <button
@@ -209,6 +232,15 @@ export default function MapView() {
             </button>
           ))}
         </div>
+
+        {/* Manual add button */}
+        <button
+          onClick={openManualAdd}
+          className="bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 shadow-md rounded-lg px-3 py-1.5 text-xs font-medium transition-colors text-left"
+          title="Can't find the business? Add it manually."
+        >
+          + Add manually
+        </button>
       </div>
 
       {/* Legend */}
@@ -220,7 +252,7 @@ export default function MapView() {
           </div>
         ))}
         <div className="flex items-center gap-2 pt-1 border-t border-gray-100 mt-1">
-          <span className="text-gray-500">Click any business to log a call</span>
+          <span className="text-gray-500">Click a business or search to log</span>
         </div>
       </div>
 
