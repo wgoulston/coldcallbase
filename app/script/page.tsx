@@ -344,7 +344,7 @@ export default function ScriptPage() {
                 </li>
                 <li>
                   <span>
-                    Tell william (me) that you go a successful booking or sale
+                    Tell William (me) that you got a successful booking or sale
                     from the call.
                   </span>
                 </li>
