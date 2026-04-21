@@ -16,6 +16,6 @@ export async function DELETE(_req: Request, { params }: { params: { id: string }
 
   const admin = createAdminClient()
   const { error } = await admin.auth.admin.deleteUser(params.id)
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'Failed to delete user' }, { status: 500 })
   return new NextResponse(null, { status: 204 })
 }

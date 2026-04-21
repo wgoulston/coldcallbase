@@ -14,18 +14,19 @@ export async function GET() {
 
   const admin = createAdminClient()
   const { data, error } = await admin.auth.admin.listUsers()
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 })
   return NextResponse.json(data.users)
 }
 
 export async function POST(request: Request) {
   if (!await assertAdmin()) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
-  const { email } = await request.json()
+  const body = await request.json()
+  const email = typeof body?.email === 'string' ? body.email.trim() : ''
   if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 })
 
   const admin = createAdminClient()
   const { data, error } = await admin.auth.admin.inviteUserByEmail(email)
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) return NextResponse.json({ error: 'Failed to invite user' }, { status: 500 })
   return NextResponse.json(data.user, { status: 201 })
 }
