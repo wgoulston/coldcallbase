@@ -23,8 +23,6 @@ Hi, it's [Your Name] from 3aIT. I noticed your business may be missing a modern 
 No worries - could I grab two minutes with them? It's a quick call about the business website.
 
 ## 3) Pitch + pricing
-At 3aIT, we build websites for local businesses focused on performance and lead generation.
-
 Pricing starts from **£500-£800** for a straightforward static site, or **£800+** for something interactive (booking, ecommerce, custom enquiry flows).
 
 If helpful, I can put together a **free preview concept** within a few days so you can see what an updated site could look like before making any decision.
@@ -43,7 +41,7 @@ Basic sites start at £500-£800; more advanced builds are £800+.
 No pressure - can I send details so you have them for later?
 
 ## 6) Wrap up
-**Interested:** Great - I will prepare something and call you back in a couple of days.
+**Interested:** Great - I will prepare a draft and call you back in a couple of days. Before I do, could I quickly note your preferred primary colour and the key feature you want the site to focus on?
 
 **Not now:** No problem - I will send a short email with my details from 3aIT.`
 
