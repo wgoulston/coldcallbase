@@ -18,6 +18,8 @@ export default function Navbar() {
   const [open, setOpen]     = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
 
+  if (pathname === '/login') return null
+
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       setIsAdmin((user?.app_metadata as Record<string, unknown>)?.role === 'admin')

@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
-import { createClient } from '@/lib/supabase/server'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
@@ -13,15 +12,12 @@ export const metadata: Metadata = {
   description: 'Track your cold calls and business outreach',
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {user && <Navbar />}
-        <main className={user ? 'pt-16' : ''}>
+        <Navbar />
+        <main className="pt-16">
           {children}
         </main>
         <Analytics />
