@@ -92,7 +92,7 @@ export default function ScriptPage() {
             <div className="price-card">
               <div className="price-label">Static Site</div>
               <div className="price-amount">
-                £500 <span>– £800</span>
+                £500 – £800
               </div>
               <div className="price-desc">
                 Clean, fast, mobile-friendly. Great for businesses that just
@@ -102,7 +102,7 @@ export default function ScriptPage() {
             <div className="price-card featured">
               <div className="price-label green">Dynamic / Reactive Site</div>
               <div className="price-amount">
-                £800<span>+</span>
+                £800+
               </div>
               <div className="price-desc">
                 Contact forms, booking systems, e-commerce, CMS — anything with
