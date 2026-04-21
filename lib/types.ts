@@ -38,11 +38,11 @@ export const SITE_STATUS_LABELS: Record<SiteStatus, string> = {
   cancelled:   'Cancelled',
 }
 
-export const SITE_STATUS_COLORS: Record<SiteStatus, { bg: string; text: string }> = {
-  in_progress: { bg: 'bg-blue-100',   text: 'text-blue-800'  },
-  live:        { bg: 'bg-green-100',  text: 'text-green-800' },
-  maintenance: { bg: 'bg-amber-100',  text: 'text-amber-800' },
-  cancelled:   { bg: 'bg-gray-100',   text: 'text-gray-600'  },
+export const SITE_STATUS_COLORS: Record<SiteStatus, { bg: string; text: string; hex: string }> = {
+  in_progress: { bg: 'bg-blue-100',   text: 'text-blue-800',   hex: '#93c5fd' },
+  live:        { bg: 'bg-green-100',  text: 'text-green-800',  hex: '#6ee7b7' },
+  maintenance: { bg: 'bg-amber-100',  text: 'text-amber-800',  hex: '#fbbf24' },
+  cancelled:   { bg: 'bg-gray-100',   text: 'text-gray-600',   hex: '#7a7a8a' },
 }
 
 export interface ClientWebsite {
@@ -64,9 +64,9 @@ export const STATUS_LABELS: Record<CallStatus, string> = {
 }
 
 export const STATUS_COLORS: Record<CallStatus, { bg: string; text: string; dot: string; hex: string }> = {
-  pending:        { bg: 'bg-amber-100',  text: 'text-amber-800',  dot: 'bg-amber-500',  hex: '#F59E0B' },
-  interested:     { bg: 'bg-green-100',  text: 'text-green-800',  dot: 'bg-green-500',  hex: '#10B981' },
-  not_interested: { bg: 'bg-red-100',    text: 'text-red-800',    dot: 'bg-red-500',    hex: '#EF4444' },
-  callback:       { bg: 'bg-blue-100',   text: 'text-blue-800',   dot: 'bg-blue-500',   hex: '#3B82F6' },
-  closed:         { bg: 'bg-gray-100',   text: 'text-gray-700',   dot: 'bg-gray-400',   hex: '#9CA3AF' },
+  pending:        { bg: 'bg-amber-100',  text: 'text-amber-800',  dot: 'bg-amber-500',  hex: '#fbbf24' },
+  interested:     { bg: 'bg-green-100',  text: 'text-green-800',  dot: 'bg-green-500',  hex: '#6ee7b7' },
+  not_interested: { bg: 'bg-red-100',    text: 'text-red-800',    dot: 'bg-red-500',    hex: '#f87171' },
+  callback:       { bg: 'bg-blue-100',   text: 'text-blue-800',   dot: 'bg-blue-500',   hex: '#93c5fd' },
+  closed:         { bg: 'bg-gray-100',   text: 'text-gray-700',   dot: 'bg-gray-400',   hex: '#7a7a8a' },
 }

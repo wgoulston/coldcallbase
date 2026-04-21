@@ -33,6 +33,8 @@ const empty = {
   called_at: new Date().toISOString().slice(0, 16),
 }
 
+const lbl = 'block text-xs font-display font-bold tracking-widest uppercase mb-1.5'
+
 export default function CallModal({ open, onClose, onSaved, existing, preset }: Props) {
   const [form, setForm]     = useState(empty)
   const [saving, setSaving] = useState(false)
@@ -56,8 +58,8 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
         ...empty,
         business_name: preset.business_name,
         address:       preset.address,
-        phone:         preset.phone    ?? '',
-        website:       preset.website  ?? '',
+        phone:         preset.phone   ?? '',
+        website:       preset.website ?? '',
         lat:           preset.lat,
         lng:           preset.lng,
         called_at:     new Date().toISOString().slice(0, 16),
@@ -76,9 +78,9 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
     const payload = {
       ...form,
       called_at: new Date(form.called_at).toISOString(),
-      phone:    form.phone    || null,
-      website:  form.website  || null,
-      notes:    form.notes    || null,
+      phone:   form.phone   || null,
+      website: form.website || null,
+      notes:   form.notes   || null,
     }
 
     const url    = existing ? `/api/calls/${existing.id}` : '/api/calls'
@@ -112,117 +114,75 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl shadow-xl max-h-[92vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between rounded-t-2xl">
-          <h2 className="font-semibold text-gray-900">
+      <div className="relative w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl shadow-2xl max-h-[92vh] overflow-y-auto" style={{ background: 'var(--surface)' }}>
+        <div className="sticky top-0 px-6 py-4 flex items-center justify-between rounded-t-2xl" style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
+          <h2 className="font-display font-bold text-base" style={{ color: 'var(--text)' }}>
             {existing ? 'Edit Call' : 'Log a Call'}
           </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+          <button onClick={onClose} style={{ color: 'var(--muted)' }} className="hover:opacity-80 transition-opacity">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        <form onSubmit={handleSave} className="px-6 py-5 space-y-4">
+        <form onSubmit={handleSave} className="px-6 py-5 space-y-4" style={{ background: 'var(--surface2)' }}>
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-2.5">
+            <div className="rounded-lg px-4 py-2.5 text-sm" style={{ background: 'rgba(248,113,113,0.1)', border: '1px solid rgba(248,113,113,0.3)', color: 'var(--red)' }}>
               {error}
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Business name *</label>
-            <input
-              required
-              value={form.business_name}
-              onChange={e => setForm(f => ({ ...f, business_name: e.target.value }))}
-              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Acme Plumbing"
-            />
+            <label className={lbl} style={{ color: 'var(--muted)' }}>Business name *</label>
+            <input required value={form.business_name} onChange={e => setForm(f => ({ ...f, business_name: e.target.value }))} className="field" placeholder="Acme Plumbing" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Address *</label>
-            <input
-              required
-              value={form.address}
-              onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
-              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="123 High Street, Horsham, RH12"
-            />
+            <label className={lbl} style={{ color: 'var(--muted)' }}>Address *</label>
+            <input required value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))} className="field" placeholder="123 High Street, Horsham" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-              <input
-                type="tel"
-                value={form.phone}
-                onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                placeholder="+44 1234 567890"
-              />
+              <label className={lbl} style={{ color: 'var(--muted)' }}>Phone</label>
+              <input type="tel" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} className="field" placeholder="+44 1234 567890" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Website</label>
-              <input
-                type="url"
-                value={form.website}
-                onChange={e => setForm(f => ({ ...f, website: e.target.value }))}
-                className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                placeholder="https://example.com"
-              />
+              <label className={lbl} style={{ color: 'var(--muted)' }}>Website</label>
+              <input type="url" value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} className="field" placeholder="https://example.com" />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Status *</label>
-              <select
-                value={form.status}
-                onChange={e => setForm(f => ({ ...f, status: e.target.value as CallStatus }))}
-                className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-              >
-                {STATUSES.map(s => (
-                  <option key={s} value={s}>{STATUS_LABELS[s]}</option>
-                ))}
+              <label className={lbl} style={{ color: 'var(--muted)' }}>Status *</label>
+              <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value as CallStatus }))} className="field">
+                {STATUSES.map(s => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}
               </select>
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Called at</label>
-              <input
-                type="datetime-local"
-                value={form.called_at}
-                onChange={e => setForm(f => ({ ...f, called_at: e.target.value }))}
-                className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
+              <label className={lbl} style={{ color: 'var(--muted)' }}>Called at</label>
+              <input type="datetime-local" value={form.called_at} onChange={e => setForm(f => ({ ...f, called_at: e.target.value }))} className="field" />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-            <textarea
-              rows={3}
-              value={form.notes}
-              onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
-              placeholder="What did they say? Follow-up details..."
-            />
+            <label className={lbl} style={{ color: 'var(--muted)' }}>Notes</label>
+            <textarea rows={3} value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} className="field resize-none" placeholder="What did they say? Follow-up details..." />
           </div>
 
           {existing && (
-            <div className="bg-gray-50 rounded-lg px-4 py-3 space-y-1 text-xs text-gray-500">
+            <div className="rounded-lg px-4 py-3 space-y-1 text-xs" style={{ background: 'rgba(110,231,183,0.04)', border: '1px solid var(--border)' }}>
               <div className="flex justify-between">
-                <span>Logged by</span>
-                <span className="font-medium text-gray-700">{existing.created_by_email ?? 'Unknown'}</span>
+                <span style={{ color: 'var(--muted)' }}>Logged by</span>
+                <span style={{ color: 'var(--text)' }}>{existing.created_by_email ?? 'Unknown'}</span>
               </div>
               <div className="flex justify-between">
-                <span>Created</span>
-                <span className="font-medium text-gray-700">
+                <span style={{ color: 'var(--muted)' }}>Created</span>
+                <span style={{ color: 'var(--text)' }}>
                   {new Date(existing.created_at).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}
                 </span>
               </div>
@@ -230,20 +190,11 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
           )}
 
           <div className="flex items-center gap-3 pt-1">
-            <button
-              type="submit"
-              disabled={saving}
-              className="flex-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white font-medium py-2.5 rounded-lg text-sm transition-colors"
-            >
+            <button type="submit" disabled={saving} className="btn-primary flex-1">
               {saving ? 'Saving…' : existing ? 'Save changes' : 'Log call'}
             </button>
-
             {existing && (
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="px-4 py-2.5 border border-red-300 text-red-600 hover:bg-red-50 rounded-lg text-sm font-medium transition-colors"
-              >
+              <button type="button" onClick={handleDelete} className="btn-danger">
                 Delete
               </button>
             )}
