@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import type { CallStatus } from '@/lib/types'
+import { isInterestedOrCallback, sendCallStatusDiscordNotification } from '@/lib/notifications/discord'
 
 const VALID_STATUSES: CallStatus[] = ['pending', 'interested', 'not_interested', 'callback', 'closed']
 
@@ -55,5 +56,14 @@ export async function POST(request: Request) {
     .single()
 
   if (error) return NextResponse.json({ error: 'Failed to create call' }, { status: 500 })
+
+  if (isInterestedOrCallback(data.status)) {
+    try {
+      await sendCallStatusDiscordNotification(data)
+    } catch (notificationError) {
+      console.error('Discord notification failed for call create', notificationError)
+    }
+  }
+
   return NextResponse.json(data, { status: 201 })
 }

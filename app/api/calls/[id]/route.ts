@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import type { CallStatus } from '@/lib/types'
+import { isInterestedOrCallback, sendCallStatusDiscordNotification } from '@/lib/notifications/discord'
 
 const VALID_STATUSES: CallStatus[] = ['pending', 'interested', 'not_interested', 'callback', 'closed']
 
@@ -23,6 +24,16 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   if (status !== undefined && !VALID_STATUSES.includes(status))
     return NextResponse.json({ error: 'Invalid status value' }, { status: 400 })
 
+  const { data: existingCall, error: existingError } = await supabase
+    .from('cold_calls')
+    .select('id,status')
+    .eq('id', params.id)
+    .single()
+
+  if (existingError || !existingCall) {
+    return NextResponse.json({ error: 'Call not found' }, { status: 404 })
+  }
+
   const patch: Record<string, unknown> = {}
   if (business_name !== undefined) patch.business_name = business_name.trim()
   if (address !== undefined)       patch.address = address.trim()
@@ -42,6 +53,19 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     .single()
 
   if (error) return NextResponse.json({ error: 'Failed to update call' }, { status: 500 })
+
+  const transitionedToNotifyStatus =
+    isInterestedOrCallback(data.status) &&
+    existingCall.status !== data.status
+
+  if (transitionedToNotifyStatus) {
+    try {
+      await sendCallStatusDiscordNotification(data)
+    } catch (notificationError) {
+      console.error('Discord notification failed for call update', notificationError)
+    }
+  }
+
   return NextResponse.json(data)
 }
 

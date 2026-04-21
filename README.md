@@ -46,6 +46,7 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 NEXT_PUBLIC_GOOGLE_MAPS_KEY=your-google-maps-api-key
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
 ```
 
 ### 5. Run locally

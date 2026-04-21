@@ -1,6 +1,6 @@
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
-export const metadata: Metadata = { title: 'Call Script — ColdCallBase' }
+export const metadata: Metadata = { title: "Call Script — ColdCallBase" };
 
 export default function ScriptPage() {
   return (
@@ -72,24 +72,39 @@ export default function ScriptPage() {
 
       <div className="ccs">
         <div className="container">
-
           <header>
             <div className="eyebrow">Cold Call Script — v2</div>
-            <h1>Keep It <span>Simple</span></h1>
-            <p className="subtitle">Direct, friendly, and to the point — with pricing up front</p>
+            <h1>
+              Keep It <span>Simple</span>
+            </h1>
+            <p className="subtitle">
+              Direct, friendly, and to the point — with pricing up front
+            </p>
           </header>
 
-          <div className="eyebrow" style={{ marginBottom: 14 }}>Your Pricing</div>
+          <div className="eyebrow" style={{ marginBottom: 14 }}>
+            Your Pricing
+          </div>
           <div className="pricing">
             <div className="price-card">
               <div className="price-label">Static Site</div>
-              <div className="price-amount">£500 <span>– £800</span></div>
-              <div className="price-desc">Clean, fast, mobile-friendly. Great for businesses that just need an online presence.</div>
+              <div className="price-amount">
+                £500 <span>– £800</span>
+              </div>
+              <div className="price-desc">
+                Clean, fast, mobile-friendly. Great for businesses that just
+                need an online presence.
+              </div>
             </div>
             <div className="price-card featured">
               <div className="price-label green">Dynamic / Reactive Site</div>
-              <div className="price-amount">£800<span>+</span></div>
-              <div className="price-desc">Contact forms, booking systems, e-commerce, CMS — anything with moving parts.</div>
+              <div className="price-amount">
+                £800<span>+</span>
+              </div>
+              <div className="price-desc">
+                Contact forms, booking systems, e-commerce, CMS — anything with
+                moving parts.
+              </div>
             </div>
           </div>
 
@@ -101,11 +116,22 @@ export default function ScriptPage() {
             <div className="section-body">
               <div className="script-block">
                 <span className="lbl">You say</span>
-                Hey, is that [Business Name]? Hi — is the owner around by any chance?
+                Hey, is that [Business Name]? Hi — is the owner around by any
+                chance?
               </div>
               <ul className="notes">
-                <li><span>Keep it short — don&apos;t pitch yet, just get to the right person.</span></li>
-                <li><span>If they ask what it&apos;s about — &ldquo;It&apos;s just a quick call about your website, won&apos;t take long!&rdquo;</span></li>
+                <li>
+                  <span>
+                    Keep it short — don&apos;t pitch yet, just get to the right
+                    person.
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    If they ask what it&apos;s about — &ldquo;It&apos;s just a
+                    quick call about your website, won&apos;t take long!&rdquo;
+                  </span>
+                </li>
               </ul>
             </div>
           </div>
@@ -117,17 +143,43 @@ export default function ScriptPage() {
             </div>
             <div className="section-body">
               <div className="script-block">
-                <span className="lbl">If you&apos;re speaking to the owner</span>
-                Hi! My name&apos;s [Your Name] — I noticed you don&apos;t have a website and just wanted to reach out quickly. I build websites for local businesses — do you have 2 minutes?
+                <span className="lbl">
+                  If you&apos;re speaking to the owner
+                </span>
+                Hi! My name&apos;s [Your Name] — I noticed you don&apos;t have a
+                website and just wanted to reach out quickly. I build websites
+                for local businesses — do you have 2 minutes?
               </div>
               <div className="script-block">
-                <span className="lbl">If it&apos;s a gatekeeper / member of staff</span>
-                No worries — could I grab 2 minutes with them? It&apos;s just a quick call about the business&apos;s website. <em>(If unavailable: &ldquo;When&apos;s a good time to catch them?&rdquo; — note it down and call back.)</em>
+                <span className="lbl">
+                  If it&apos;s a gatekeeper / member of staff
+                </span>
+                No worries — could I grab 2 minutes with them? It&apos;s just a
+                quick call about the business&apos;s website.{" "}
+                <em>
+                  (If unavailable: &ldquo;When&apos;s a good time to catch
+                  them?&rdquo; — note it down and call back.)
+                </em>
               </div>
               <ul className="notes">
-                <li><span>Don&apos;t pitch to staff — they can&apos;t say yes and will usually just say no on the owner&apos;s behalf.</span></li>
-                <li><span>If they say no / bad time — &ldquo;No worries, when&apos;s a better time to call back?&rdquo;</span></li>
-                <li><span>If they have a site — &ldquo;Oh great! Is it getting you much business at the moment?&rdquo;</span></li>
+                <li>
+                  <span>
+                    Don&apos;t pitch to staff — they can&apos;t say yes and will
+                    usually just say no on the owner&apos;s behalf.
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    If they say no / bad time — &ldquo;No worries, when&apos;s a
+                    better time to call back?&rdquo;
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    If they have a site — &ldquo;Oh great! Is it getting you
+                    much business at the moment?&rdquo;
+                  </span>
+                </li>
               </ul>
             </div>
           </div>
@@ -140,8 +192,18 @@ export default function ScriptPage() {
             <div className="section-body">
               <div className="script-block">
                 <span className="lbl">You say</span>
-                So basically — I make websites for small businesses in the area. Prices start from around <strong>£500–£800 for a straightforward static site</strong>, or <strong>£800+ if you need something more interactive</strong> — like online booking, a shop, or a contact form that actually does stuff.<br /><br />
-                Either way, I can put together a <strong>free demo for you within a few days</strong> so you can actually see what it&apos;d look like before you commit to anything.
+                So basically — I make websites for small businesses in the area.
+                Prices start from around{" "}
+                <strong>£500–£800 for a straightforward static site</strong>, or{" "}
+                <strong>£800+ if you need something more interactive</strong> —
+                like online booking, a shop, or a contact form that actually
+                does stuff.
+                <br />
+                <br />
+                Either way, I can put together a{" "}
+                <strong>free demo for you within a few days</strong> so you can
+                actually see what it&apos;d look like before you commit to
+                anything.
               </div>
             </div>
           </div>
@@ -154,11 +216,24 @@ export default function ScriptPage() {
             <div className="section-body">
               <div className="script-block">
                 <span className="lbl">You say</span>
-                Would it be alright if I put something together and gave you a call back in a couple of days to show you what I&apos;ve come up with? Totally free, no obligation — if you like it we can talk, if not, no worries at all.
+                Would it be alright if I put something together and gave you a
+                call back in a couple of days to show you what I&apos;ve come up
+                with? Totally free, no obligation — if you like it we can talk,
+                if not, no worries at all.
               </div>
               <ul className="notes">
-                <li><span>If yes — get their name, email, and any info about the business (what they do, any colours/style preferences).</span></li>
-                <li><span>If unsure — &ldquo;I&apos;ll keep it really quick, just 5 minutes — you can always say no after seeing it!&rdquo;</span></li>
+                <li>
+                  <span>
+                    If yes — get their name, email, and any info about the
+                    business (what they do, any colours/style preferences).
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    If unsure — &ldquo;I&apos;ll keep it really quick, just 5
+                    minutes — you can always say no after seeing it!&rdquo;
+                  </span>
+                </li>
               </ul>
             </div>
           </div>
@@ -172,44 +247,72 @@ export default function ScriptPage() {
               <div className="obj">
                 <div className="obj-row">
                   <span className="obj-badge q">Them</span>
-                  <span className="obj-text">&ldquo;We already have a website.&rdquo;</span>
+                  <span className="obj-text">
+                    &ldquo;We already have a website.&rdquo;
+                  </span>
                 </div>
                 <div className="obj-row">
                   <span className="obj-badge a">You</span>
-                  <span className="obj-text">Oh nice — is it working well for you? Bringing in customers? A lot of older sites aren&apos;t set up to show up on Google properly or look good on phones. I could take a look and let you know if there&apos;s anything worth improving — no charge for that.</span>
+                  <span className="obj-text">
+                    Oh nice — is it working well for you? Bringing in customers?
+                    A lot of older sites aren&apos;t set up to show up on Google
+                    properly or look good on phones. I could take a look and let
+                    you know if there&apos;s anything worth improving — no
+                    charge for that.
+                  </span>
                 </div>
               </div>
 
               <div className="obj">
                 <div className="obj-row">
                   <span className="obj-badge q">Them</span>
-                  <span className="obj-text">&ldquo;How much does it cost?&rdquo;</span>
+                  <span className="obj-text">
+                    &ldquo;How much does it cost?&rdquo;
+                  </span>
                 </div>
                 <div className="obj-row">
                   <span className="obj-badge a">You</span>
-                  <span className="obj-text">So a basic site starts at £500–£800. If you need anything more — like a shop or booking system — it&apos;d be £800+. But honestly the easiest thing is for me to build you a quick demo and give you a proper quote once I know what you need. Sound fair?</span>
+                  <span className="obj-text">
+                    So a basic site starts at £500–£800. If you need anything
+                    more — like a shop or booking system — it&apos;d be £800+.
+                    But honestly the easiest thing is for me to build you a
+                    quick demo and give you a proper quote once I know what you
+                    need. Sound fair?
+                  </span>
                 </div>
               </div>
 
               <div className="obj">
                 <div className="obj-row">
                   <span className="obj-badge q">Them</span>
-                  <span className="obj-text">&ldquo;We can&apos;t afford it right now.&rdquo;</span>
+                  <span className="obj-text">
+                    &ldquo;We can&apos;t afford it right now.&rdquo;
+                  </span>
                 </div>
                 <div className="obj-row">
                   <span className="obj-badge a">You</span>
-                  <span className="obj-text">Totally fair — no pressure at all. Would it be alright if I sent you something over email so you&apos;ve got my details for when the time&apos;s right?</span>
+                  <span className="obj-text">
+                    Totally fair — no pressure at all. Would it be alright if I
+                    sent you something over email so you&apos;ve got my details
+                    for when the time&apos;s right?
+                  </span>
                 </div>
               </div>
 
               <div className="obj">
                 <div className="obj-row">
                   <span className="obj-badge q">Them</span>
-                  <span className="obj-text">&ldquo;Just send me an email.&rdquo;</span>
+                  <span className="obj-text">
+                    &ldquo;Just send me an email.&rdquo;
+                  </span>
                 </div>
                 <div className="obj-row">
                   <span className="obj-badge a">You</span>
-                  <span className="obj-text">Yeah of course! What&apos;s the best email? And just so I can make it relevant — what does the business do mainly? <em>(send a short, punchy email within the hour)</em></span>
+                  <span className="obj-text">
+                    Yeah of course! What&apos;s the best email? And just so I
+                    can make it relevant — what does the business do mainly?{" "}
+                    <em>(send a short, punchy email within the hour)</em>
+                  </span>
                 </div>
               </div>
             </div>
@@ -223,22 +326,39 @@ export default function ScriptPage() {
             <div className="section-body">
               <div className="script-block">
                 <span className="lbl">If they&apos;re interested</span>
-                Amazing — I&apos;ll get started on something and give you a call back in a couple of days. What&apos;s the best number for you? Cheers, [Name] — speak soon!
+                Amazing — I&apos;ll get started on something and give you a call
+                back in a couple of days. What&apos;s the best number for you?
+                Cheers, [Name] — speak soon!
               </div>
               <div className="script-block">
                 <span className="lbl">If not right now</span>
-                No worries at all — I&apos;ll drop you an email so you&apos;ve got my details. Hope business is going well, cheers!
+                No worries at all — I&apos;ll drop you an email so you&apos;ve
+                got my details. Hope business is going well, cheers!
               </div>
               <ul className="notes">
-                <li><span>Note down what they told you about the business before you hang up.</span></li>
-                <li><span>Build the demo within 48 hours while the call is fresh.</span></li>
-                <li><span>Follow up exactly when you said you would — reliability sells.</span></li>
+                <li>
+                  <span>
+                    Note down what they told you about the business before you
+                    hang up.
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    Tell william (me) that you go a successful booking or sale
+                    from the call.
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    Follow up exactly when you said you would — reliability
+                    sells.
+                  </span>
+                </li>
               </ul>
             </div>
           </div>
-
         </div>
       </div>
     </>
-  )
+  );
 }
