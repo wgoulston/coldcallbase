@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import StatusBadge from '@/components/StatusBadge'
-import { CallStatus, STATUS_COLORS, STATUS_LABELS } from '@/lib/types'
+import { CallStatus, STATUS_LABELS } from '@/lib/types'
 import Link from 'next/link'
 
 const STAT_STATUSES: CallStatus[] = ['pending', 'interested', 'not_interested', 'callback', 'closed']
@@ -39,17 +39,14 @@ export default async function Dashboard() {
         </Link>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        {STAT_STATUSES.map(status => {
-          const c = STATUS_COLORS[status]
-          return (
-            <div key={status} className={`rounded-xl border p-4 space-y-2 ${c.bg} border-transparent`}>
-              <StatusBadge status={status} />
-              <p className="text-3xl font-bold text-gray-900">{counts[status]}</p>
-            </div>
-          )
-        })}
+      {/* Stats — horizontal scroll on mobile, grid on desktop */}
+      <div className="flex gap-3 overflow-x-auto -mx-4 px-4 pb-1 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 lg:grid-cols-5">
+        {STAT_STATUSES.map(status => (
+          <div key={status} className="shrink-0 w-40 sm:w-auto bg-white rounded-xl border border-gray-200 p-4 space-y-2">
+            <p className="text-3xl font-bold text-gray-900">{counts[status]}</p>
+            <StatusBadge status={status} />
+          </div>
+        ))}
       </div>
 
       {/* Recent calls */}
@@ -74,16 +71,23 @@ export default async function Dashboard() {
         ) : (
           <div className="divide-y divide-gray-50">
             {recent.map(call => (
-              <div key={call.id} className="px-4 sm:px-6 py-4 flex items-center gap-3 sm:gap-4">
+              <Link
+                key={call.id}
+                href="/calls"
+                className="px-4 sm:px-6 py-4 flex items-center gap-3 sm:gap-4 hover:bg-gray-50 transition-colors"
+              >
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-gray-900 truncate">{call.business_name}</p>
-                  <p className="text-sm text-gray-500 truncate">{call.address}</p>
+                  <p className="text-xs text-gray-400 truncate mt-0.5">
+                    {call.address}
+                    {call.created_by_email ? ` · ${call.created_by_email}` : ''}
+                  </p>
                 </div>
                 <StatusBadge status={call.status as CallStatus} />
                 <span className="text-xs text-gray-400 shrink-0">
                   {new Date(call.called_at).toLocaleDateString('en-GB')}
                 </span>
-              </div>
+              </Link>
             ))}
           </div>
         )}

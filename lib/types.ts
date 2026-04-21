@@ -6,6 +6,7 @@ export interface ColdCall {
   address: string
   phone: string | null
   website: string | null
+  created_by_email: string | null
   lat: number
   lng: number
   status: CallStatus

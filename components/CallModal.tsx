@@ -109,10 +109,10 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div className="relative bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-2xl shadow-xl max-h-[92vh] overflow-y-auto">
         <div className="sticky top-0 bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between rounded-t-2xl">
           <h2 className="font-semibold text-gray-900">
             {existing ? 'Edit Call' : 'Log a Call'}
@@ -149,7 +149,7 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
               value={form.address}
               onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
               className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="123 Main St, City, State"
+              placeholder="123 High Street, Horsham, RH12"
             />
           </div>
 
@@ -204,7 +204,7 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
             <textarea
-              rows={4}
+              rows={3}
               value={form.notes}
               onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
               className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
@@ -212,7 +212,22 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
             />
           </div>
 
-          <div className="flex items-center gap-3 pt-2">
+          {existing && (
+            <div className="bg-gray-50 rounded-lg px-4 py-3 space-y-1 text-xs text-gray-500">
+              <div className="flex justify-between">
+                <span>Logged by</span>
+                <span className="font-medium text-gray-700">{existing.created_by_email ?? 'Unknown'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Created</span>
+                <span className="font-medium text-gray-700">
+                  {new Date(existing.created_at).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}
+                </span>
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center gap-3 pt-1">
             <button
               type="submit"
               disabled={saving}
