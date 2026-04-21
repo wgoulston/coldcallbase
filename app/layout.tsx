@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import { createClient } from '@/lib/supabase/server'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,6 +24,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <main className={user ? 'pt-16' : ''}>
           {children}
         </main>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
