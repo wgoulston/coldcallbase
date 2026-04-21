@@ -24,6 +24,7 @@ const empty = {
   business_name: '',
   address: '',
   phone: '',
+  website: '',
   lat: 0,
   lng: 0,
   status: 'pending' as CallStatus,
@@ -42,6 +43,7 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
         business_name: existing.business_name,
         address:       existing.address,
         phone:         existing.phone ?? '',
+        website:       existing.website ?? '',
         lat:           existing.lat,
         lng:           existing.lng,
         status:        existing.status,
@@ -72,8 +74,9 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
     const payload = {
       ...form,
       called_at: new Date(form.called_at).toISOString(),
-      phone: form.phone || null,
-      notes: form.notes || null,
+      phone:    form.phone    || null,
+      website:  form.website  || null,
+      notes:    form.notes    || null,
     }
 
     const url    = existing ? `/api/calls/${existing.id}` : '/api/calls'
@@ -150,15 +153,27 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-            <input
-              type="tel"
-              value={form.phone}
-              onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-              className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="(555) 123-4567"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+              <input
+                type="tel"
+                value={form.phone}
+                onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="+44 1234 567890"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Website</label>
+              <input
+                type="url"
+                value={form.website}
+                onChange={e => setForm(f => ({ ...f, website: e.target.value }))}
+                className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="https://example.com"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">

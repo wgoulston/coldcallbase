@@ -20,34 +20,32 @@ export default async function Dashboard() {
   const recent = calls?.slice(0, 8) ?? []
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
           <p className="text-sm text-gray-500 mt-0.5">{calls?.length ?? 0} total businesses contacted</p>
         </div>
         <Link
           href="/map"
-          className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors"
+          className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-3 py-2.5 sm:px-4 rounded-lg transition-colors shrink-0"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
           </svg>
-          Open Map
+          <span className="hidden sm:inline">Open Map</span>
+          <span className="sm:hidden">Map</span>
         </Link>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {STAT_STATUSES.map(status => {
           const c = STATUS_COLORS[status]
           return (
-            <div key={status} className="bg-white rounded-xl border border-gray-200 p-5 space-y-1">
-              <div className="flex items-center gap-2">
-                <span className={`w-2 h-2 rounded-full ${c.dot}`} />
-                <span className="text-xs font-medium text-gray-500">{STATUS_LABELS[status]}</span>
-              </div>
+            <div key={status} className={`rounded-xl border p-4 space-y-2 ${c.bg} border-transparent`}>
+              <StatusBadge status={status} />
               <p className="text-3xl font-bold text-gray-900">{counts[status]}</p>
             </div>
           )
@@ -56,7 +54,7 @@ export default async function Dashboard() {
 
       {/* Recent calls */}
       <div className="bg-white rounded-xl border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <div className="px-4 sm:px-6 py-4 border-b border-gray-100 flex items-center justify-between">
           <h2 className="font-semibold text-gray-900">Recent calls</h2>
           <Link href="/calls" className="text-sm text-indigo-600 hover:text-indigo-800 font-medium">
             View all →
@@ -76,14 +74,14 @@ export default async function Dashboard() {
         ) : (
           <div className="divide-y divide-gray-50">
             {recent.map(call => (
-              <div key={call.id} className="px-6 py-4 flex items-center gap-4">
+              <div key={call.id} className="px-4 sm:px-6 py-4 flex items-center gap-3 sm:gap-4">
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-gray-900 truncate">{call.business_name}</p>
                   <p className="text-sm text-gray-500 truncate">{call.address}</p>
                 </div>
                 <StatusBadge status={call.status as CallStatus} />
                 <span className="text-xs text-gray-400 shrink-0">
-                  {new Date(call.called_at).toLocaleDateString()}
+                  {new Date(call.called_at).toLocaleDateString('en-GB')}
                 </span>
               </div>
             ))}

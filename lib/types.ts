@@ -5,6 +5,7 @@ export interface ColdCall {
   business_name: string
   address: string
   phone: string | null
+  website: string | null
   lat: number
   lng: number
   status: CallStatus
@@ -19,6 +20,7 @@ export interface ColdCallInsert {
   business_name: string
   address: string
   phone?: string
+  website?: string
   lat: number
   lng: number
   status: CallStatus
