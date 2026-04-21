@@ -79,6 +79,24 @@ create trigger app_settings_updated_at
   before update on app_settings
   for each row execute function update_updated_at();
 
+-- Track website activity heartbeat per user
+create table user_presence (
+  user_id      uuid primary key references auth.users(id) on delete cascade,
+  last_seen_at timestamptz not null default now(),
+  updated_at   timestamptz not null default now()
+);
+
+alter table user_presence enable row level security;
+create policy "user_presence_select_own_or_admin" on user_presence for select using (
+  auth.uid() = user_id or (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+);
+create policy "user_presence_insert_own" on user_presence for insert with check (auth.uid() = user_id);
+create policy "user_presence_update_own" on user_presence for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+create trigger user_presence_updated_at
+  before update on user_presence
+  for each row execute function update_updated_at();
+
 -- Client websites (admin-managed)
 create table client_websites (
   id            uuid default uuid_generate_v4() primary key,

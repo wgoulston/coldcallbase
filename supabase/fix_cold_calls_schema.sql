@@ -121,3 +121,48 @@ drop trigger if exists app_settings_updated_at on public.app_settings;
 create trigger app_settings_updated_at
   before update on public.app_settings
   for each row execute function update_updated_at();
+
+create table if not exists public.user_presence (
+  user_id      uuid primary key references auth.users(id) on delete cascade,
+  last_seen_at timestamptz not null default now(),
+  updated_at   timestamptz not null default now()
+);
+
+alter table public.user_presence enable row level security;
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'user_presence' and policyname = 'user_presence_select_own_or_admin'
+  ) then
+    create policy "user_presence_select_own_or_admin" on public.user_presence for select using (
+      auth.uid() = user_id or (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+    );
+  end if;
+end $$;
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'user_presence' and policyname = 'user_presence_insert_own'
+  ) then
+    create policy "user_presence_insert_own" on public.user_presence for insert with check (auth.uid() = user_id);
+  end if;
+end $$;
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'user_presence' and policyname = 'user_presence_update_own'
+  ) then
+    create policy "user_presence_update_own" on public.user_presence for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+end $$;
+
+drop trigger if exists user_presence_updated_at on public.user_presence;
+create trigger user_presence_updated_at
+  before update on public.user_presence
+  for each row execute function update_updated_at();

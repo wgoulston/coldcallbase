@@ -9,6 +9,7 @@ interface TeamUser {
   email: string
   created_at: string
   last_sign_in_at: string | null
+  last_active_at: string | null
   app_metadata: Record<string, unknown>
 }
 
@@ -190,7 +191,7 @@ export default function AdminPage() {
                     <p className="text-sm font-medium truncate" style={{ color: 'var(--text)' }}>{u.email}</p>
                     <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>
                       Joined {new Date(u.created_at).toLocaleDateString('en-GB')}
-                      {u.last_sign_in_at && ` · Last sign-in ${new Date(u.last_sign_in_at).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}`}
+                      {u.last_active_at && ` · Last active ${new Date(u.last_active_at).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}`}
                     </p>
                   </div>
                   {u.app_metadata?.role === 'admin' ? (

@@ -15,7 +15,18 @@ export async function GET() {
   const admin = createAdminClient()
   const { data, error } = await admin.auth.admin.listUsers()
   if (error) return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 })
-  return NextResponse.json(data.users)
+
+  const { data: presenceRows } = await admin
+    .from('user_presence')
+    .select('user_id,last_seen_at')
+
+  const presenceMap = new Map((presenceRows ?? []).map(row => [row.user_id, row.last_seen_at]))
+  const usersWithPresence = data.users.map(user => ({
+    ...user,
+    last_active_at: presenceMap.get(user.id) ?? null,
+  }))
+
+  return NextResponse.json(usersWithPresence)
 }
 
 export async function POST(request: Request) {

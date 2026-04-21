@@ -26,6 +26,28 @@ export default function Navbar() {
     })
   }, [supabase])
 
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval> | null = null
+    const pingPresence = async () => {
+      try {
+        await fetch('/api/presence', { method: 'POST' })
+      } catch {}
+    }
+
+    pingPresence()
+    interval = setInterval(pingPresence, 60000)
+
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') pingPresence()
+    }
+    document.addEventListener('visibilitychange', onVisible)
+
+    return () => {
+      if (interval) clearInterval(interval)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
+  }, [])
+
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     router.push('/login')
