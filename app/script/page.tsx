@@ -101,9 +101,31 @@ export default function ScriptPage() {
             <div className="section-body">
               <div className="script-block">
                 <span className="lbl">You say</span>
-                Hey, is that [Business Name]? Hi! My name&apos;s [Your Name] — I noticed you don&apos;t have a website and just wanted to reach out quickly. I build websites for local businesses — do you have 2 minutes?
+                Hey, is that [Business Name]? Hi — is the owner around by any chance?
               </div>
               <ul className="notes">
+                <li><span>Keep it short — don&apos;t pitch yet, just get to the right person.</span></li>
+                <li><span>If they ask what it&apos;s about — &ldquo;It&apos;s just a quick call about your website, won&apos;t take long!&rdquo;</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="section">
+            <div className="section-header">
+              <span className="step-num">02</span>
+              <span className="section-title">Get to the Owner</span>
+            </div>
+            <div className="section-body">
+              <div className="script-block">
+                <span className="lbl">If you&apos;re speaking to the owner</span>
+                Hi! My name&apos;s [Your Name] — I noticed you don&apos;t have a website and just wanted to reach out quickly. I build websites for local businesses — do you have 2 minutes?
+              </div>
+              <div className="script-block">
+                <span className="lbl">If it&apos;s a gatekeeper / member of staff</span>
+                No worries — could I grab 2 minutes with them? It&apos;s just a quick call about the business&apos;s website. <em>(If unavailable: &ldquo;When&apos;s a good time to catch them?&rdquo; — note it down and call back.)</em>
+              </div>
+              <ul className="notes">
+                <li><span>Don&apos;t pitch to staff — they can&apos;t say yes and will usually just say no on the owner&apos;s behalf.</span></li>
                 <li><span>If they say no / bad time — &ldquo;No worries, when&apos;s a better time to call back?&rdquo;</span></li>
                 <li><span>If they have a site — &ldquo;Oh great! Is it getting you much business at the moment?&rdquo;</span></li>
               </ul>
@@ -112,13 +134,13 @@ export default function ScriptPage() {
 
           <div className="section">
             <div className="section-header">
-              <span className="step-num">02</span>
+              <span className="step-num">03</span>
               <span className="section-title">The Pitch + Pricing</span>
             </div>
             <div className="section-body">
               <div className="script-block">
                 <span className="lbl">You say</span>
-                So basically — I build websites for small businesses in the area. Prices start from around <strong>£500–£800 for a straightforward static site</strong>, or <strong>£800+ if you need something more interactive</strong> — like online booking, a shop, or a contact form that actually does stuff.<br /><br />
+                So basically — I make websites for small businesses in the area. Prices start from around <strong>£500–£800 for a straightforward static site</strong>, or <strong>£800+ if you need something more interactive</strong> — like online booking, a shop, or a contact form that actually does stuff.<br /><br />
                 Either way, I can put together a <strong>free demo for you within a few days</strong> so you can actually see what it&apos;d look like before you commit to anything.
               </div>
             </div>
@@ -126,7 +148,7 @@ export default function ScriptPage() {
 
           <div className="section">
             <div className="section-header">
-              <span className="step-num">03</span>
+              <span className="step-num">04</span>
               <span className="section-title">The Ask</span>
             </div>
             <div className="section-body">
@@ -143,7 +165,7 @@ export default function ScriptPage() {
 
           <div className="section">
             <div className="section-header">
-              <span className="step-num warn">04</span>
+              <span className="step-num warn">05</span>
               <span className="section-title">Common Objections</span>
             </div>
             <div className="section-body">
@@ -195,7 +217,7 @@ export default function ScriptPage() {
 
           <div className="section">
             <div className="section-header">
-              <span className="step-num info">05</span>
+              <span className="step-num info">06</span>
               <span className="section-title">Wrapping Up</span>
             </div>
             <div className="section-body">
