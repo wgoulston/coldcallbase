@@ -18,6 +18,10 @@ export default async function Dashboard() {
   }, {} as Record<CallStatus, number>)
 
   const recent = calls?.slice(0, 8) ?? []
+  const dueFollowUps = calls
+    ?.filter(c => c.follow_up_at && new Date(c.follow_up_at) <= new Date())
+    .sort((a, b) => new Date(a.follow_up_at!).getTime() - new Date(b.follow_up_at!).getTime())
+    .slice(0, 5) ?? []
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
@@ -82,6 +86,38 @@ export default async function Dashboard() {
                 <StatusBadge status={call.status as CallStatus} />
                 <span className="text-xs shrink-0" style={{ color: 'var(--muted)' }}>
                   {new Date(call.called_at).toLocaleDateString('en-GB')}
+                </span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Due follow-ups */}
+      <div className="card">
+        <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid var(--border)' }}>
+          <h2 className="font-display font-bold text-sm tracking-widest uppercase" style={{ color: 'var(--muted)' }}>Due Follow-ups</h2>
+          <Link href="/calls" className="text-sm font-medium" style={{ color: 'var(--accent)' }}>Open calls →</Link>
+        </div>
+        {dueFollowUps.length === 0 ? (
+          <div className="px-6 py-8 text-sm" style={{ background: 'var(--surface2)', color: 'var(--muted)' }}>
+            No follow-ups due right now.
+          </div>
+        ) : (
+          <div style={{ background: 'var(--surface2)' }}>
+            {dueFollowUps.map((call, i) => (
+              <Link
+                key={call.id}
+                href="/calls"
+                className="px-5 py-4 flex items-center justify-between gap-4 transition-colors hover:bg-white/[0.02]"
+                style={{ borderTop: i > 0 ? '1px solid var(--border)' : undefined }}
+              >
+                <div className="min-w-0">
+                  <p className="font-medium truncate" style={{ color: 'var(--text)' }}>{call.business_name}</p>
+                  <p className="text-xs truncate mt-0.5" style={{ color: 'var(--muted)' }}>{call.address}</p>
+                </div>
+                <span className="text-xs shrink-0" style={{ color: 'var(--accent)' }}>
+                  {new Date(call.follow_up_at!).toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' })}
                 </span>
               </Link>
             ))}

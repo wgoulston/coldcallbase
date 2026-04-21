@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
   const body = await request.json()
 
-  const { business_name, address, phone, website, lat, lng, status, notes, called_at } = body
+  const { business_name, address, phone, website, lat, lng, status, notes, called_at, follow_up_at } = body
 
   if (!business_name || typeof business_name !== 'string' || !business_name.trim())
     return NextResponse.json({ error: 'business_name is required' }, { status: 400 })
@@ -49,6 +49,7 @@ export async function POST(request: Request) {
       status: status ?? 'pending',
       notes: notes ? String(notes).trim() : null,
       called_at: called_at ?? undefined,
+      follow_up_at: follow_up_at ?? null,
       created_by: user.id,
       created_by_email: user.email,
     })

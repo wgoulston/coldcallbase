@@ -12,6 +12,7 @@ export interface ColdCall {
   status: CallStatus
   notes: string | null
   called_at: string
+  follow_up_at: string | null
   created_at: string
   updated_at: string
   created_by: string | null
@@ -27,6 +28,7 @@ export interface ColdCallInsert {
   status: CallStatus
   notes?: string
   called_at?: string
+  follow_up_at?: string | null
 }
 
 export type SiteStatus = 'in_progress' | 'live' | 'maintenance' | 'cancelled'

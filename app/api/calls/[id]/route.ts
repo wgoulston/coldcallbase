@@ -11,7 +11,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await request.json()
-  const { business_name, address, phone, website, lat, lng, status, notes, called_at } = body
+  const { business_name, address, phone, website, lat, lng, status, notes, called_at, follow_up_at } = body
 
   if (business_name !== undefined && (typeof business_name !== 'string' || !business_name.trim()))
     return NextResponse.json({ error: 'business_name must be a non-empty string' }, { status: 400 })
@@ -44,6 +44,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   if (status !== undefined)        patch.status = status
   if (notes !== undefined)         patch.notes = notes ? String(notes).trim() : null
   if (called_at !== undefined)     patch.called_at = called_at
+  if (follow_up_at !== undefined)  patch.follow_up_at = follow_up_at
 
   const { data, error } = await supabase
     .from('cold_calls')

@@ -10,6 +10,10 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('en-GB')
 }
 
+function formatDateTime(iso: string) {
+  return new Date(iso).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })
+}
+
 const th = 'text-left px-4 py-3 text-xs font-display font-bold tracking-widest uppercase'
 
 export default function CallsPage() {
@@ -116,6 +120,11 @@ export default function CallsPage() {
                       : <span>—</span>}
                     <span>{formatDate(call.called_at)}</span>
                   </div>
+                  {call.follow_up_at && (
+                    <p className="text-xs" style={{ color: 'var(--accent)' }}>
+                      Follow-up: {formatDateTime(call.follow_up_at)}
+                    </p>
+                  )}
                   {call.website && <p className="text-xs truncate" style={{ color: 'var(--blue)' }}>{call.website.replace(/^https?:\/\//, '')}</p>}
                   {!call.website && <p className="text-xs italic" style={{ color: 'var(--muted)' }}>No website listed</p>}
                   {call.notes && <p className="text-xs line-clamp-2" style={{ color: 'var(--muted)' }}>{call.notes}</p>}
@@ -134,6 +143,7 @@ export default function CallsPage() {
                     <th className={th} style={{ color: 'var(--muted)' }}>Phone</th>
                     <th className={th} style={{ color: 'var(--muted)' }}>Status</th>
                     <th className={th} style={{ color: 'var(--muted)' }}>Called</th>
+                    <th className={th} style={{ color: 'var(--muted)' }}>Follow-up</th>
                     <th className={th} style={{ color: 'var(--muted)' }}>Website</th>
                     <th className={th} style={{ color: 'var(--muted)' }}>Logged by</th>
                     <th className="px-4 py-3" />
@@ -163,6 +173,9 @@ export default function CallsPage() {
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-xs" style={{ color: 'var(--muted)' }}>
                         {formatDate(call.called_at)}
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap text-xs" style={{ color: call.follow_up_at ? 'var(--accent)' : 'var(--border)' }}>
+                        {call.follow_up_at ? formatDate(call.follow_up_at) : '—'}
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap max-w-[160px]" onClick={e => e.stopPropagation()}>
                         {call.website ? (

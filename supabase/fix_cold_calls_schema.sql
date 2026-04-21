@@ -8,6 +8,7 @@ alter table if exists public.cold_calls
   add column if not exists created_by_email text,
   add column if not exists notes text,
   add column if not exists called_at timestamptz not null default now(),
+  add column if not exists follow_up_at timestamptz,
   add column if not exists created_by uuid;
 
 do $$

@@ -15,6 +15,7 @@ create table cold_calls (
   created_by_email  text,
   notes             text,
   called_at    timestamptz not null default now(),
+  follow_up_at timestamptz,
   created_at   timestamptz not null default now(),
   updated_at   timestamptz not null default now(),
   created_by   uuid references auth.users(id) on delete set null

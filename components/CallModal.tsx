@@ -31,6 +31,7 @@ const empty = {
   status: 'pending' as CallStatus,
   notes: '',
   called_at: new Date().toISOString().slice(0, 16),
+  follow_up_at: '',
 }
 
 const lbl = 'block text-xs font-display font-bold tracking-widest uppercase mb-1.5'
@@ -52,6 +53,7 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
         status:        existing.status,
         notes:         existing.notes ?? '',
         called_at:     existing.called_at.slice(0, 16),
+        follow_up_at:  existing.follow_up_at ? existing.follow_up_at.slice(0, 16) : '',
       })
     } else if (preset) {
       setForm({
@@ -78,6 +80,7 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
     const payload = {
       ...form,
       called_at: new Date(form.called_at).toISOString(),
+      follow_up_at: form.follow_up_at ? new Date(form.follow_up_at).toISOString() : null,
       phone:   form.phone   || null,
       website: form.website || null,
       notes:   form.notes   || null,
@@ -156,7 +159,7 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={lbl} style={{ color: 'var(--muted)' }}>Status *</label>
               <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value as CallStatus }))} className="field">
@@ -167,6 +170,16 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
               <label className={lbl} style={{ color: 'var(--muted)' }}>Called at</label>
               <input type="datetime-local" value={form.called_at} onChange={e => setForm(f => ({ ...f, called_at: e.target.value }))} className="field" />
             </div>
+          </div>
+
+          <div>
+            <label className={lbl} style={{ color: 'var(--muted)' }}>Follow-up date</label>
+            <input
+              type="datetime-local"
+              value={form.follow_up_at}
+              onChange={e => setForm(f => ({ ...f, follow_up_at: e.target.value }))}
+              className="field"
+            />
           </div>
 
           <div>
