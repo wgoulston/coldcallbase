@@ -42,6 +42,43 @@ create trigger cold_calls_updated_at
 create index cold_calls_lat_lng on cold_calls (lat, lng);
 create index cold_calls_status  on cold_calls (status);
 
+-- User-specific editable call scripts
+create table call_scripts (
+  id               uuid default uuid_generate_v4() primary key,
+  user_id          uuid not null unique references auth.users(id) on delete cascade,
+  content_markdown text not null,
+  created_at       timestamptz not null default now(),
+  updated_at       timestamptz not null default now()
+);
+
+alter table call_scripts enable row level security;
+create policy "script_select_own" on call_scripts for select using (auth.uid() = user_id);
+create policy "script_insert_own" on call_scripts for insert with check (auth.uid() = user_id);
+create policy "script_update_own" on call_scripts for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+create trigger call_scripts_updated_at
+  before update on call_scripts
+  for each row execute function update_updated_at();
+
+-- Shared markdown content managed by admin
+create table app_settings (
+  key            text primary key,
+  value_markdown text not null default '',
+  updated_at     timestamptz not null default now()
+);
+
+alter table app_settings enable row level security;
+create policy "app_settings_select_auth" on app_settings for select using (auth.role() = 'authenticated');
+create policy "app_settings_admin_upsert" on app_settings for all using (
+  (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+) with check (
+  (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+);
+
+create trigger app_settings_updated_at
+  before update on app_settings
+  for each row execute function update_updated_at();
+
 -- Client websites (admin-managed)
 create table client_websites (
   id            uuid default uuid_generate_v4() primary key,

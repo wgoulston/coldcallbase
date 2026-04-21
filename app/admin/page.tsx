@@ -2,7 +2,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { ClientWebsite, SiteStatus, SITE_STATUS_LABELS, SITE_STATUS_COLORS } from '@/lib/types'
 
-type Tab = 'team' | 'sites'
+type Tab = 'team' | 'sites' | 'content'
 
 interface TeamUser {
   id: string
@@ -32,6 +32,10 @@ export default function AdminPage() {
   const [siteModalOpen, setSiteModalOpen] = useState(false)
   const [savingSite, setSavingSite]       = useState(false)
   const [siteError, setSiteError]         = useState('')
+  const [importantInfo, setImportantInfo] = useState('')
+  const [contentSaving, setContentSaving] = useState(false)
+  const [contentMsg, setContentMsg]       = useState('')
+  const [contentError, setContentError]   = useState('')
 
   const fetchUsers = useCallback(async () => {
     const res = await fetch('/api/admin/users')
@@ -43,7 +47,14 @@ export default function AdminPage() {
     if (res.ok) setSites(await res.json())
   }, [])
 
-  useEffect(() => { fetchUsers(); fetchSites() }, [fetchUsers, fetchSites])
+  const fetchContentSettings = useCallback(async () => {
+    const res = await fetch('/api/admin/settings')
+    if (!res.ok) return
+    const data = await res.json()
+    setImportantInfo(data.important_info_markdown ?? '')
+  }, [])
+
+  useEffect(() => { fetchUsers(); fetchSites(); fetchContentSettings() }, [fetchUsers, fetchSites, fetchContentSettings])
 
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -91,6 +102,29 @@ export default function AdminPage() {
     if (res.ok) { setSiteModalOpen(false); fetchSites() }
   }
 
+  const handleSaveContent = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setContentSaving(true)
+    setContentMsg('')
+    setContentError('')
+
+    const res = await fetch('/api/admin/settings', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ important_info_markdown: importantInfo }),
+    })
+
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}))
+      setContentError(d.error ?? 'Failed to save content')
+      setContentSaving(false)
+      return
+    }
+
+    setContentMsg('Saved')
+    setContentSaving(false)
+  }
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
 
@@ -102,7 +136,7 @@ export default function AdminPage() {
 
       {/* Tabs */}
       <div className="flex gap-1" style={{ borderBottom: '1px solid var(--border)' }}>
-        {(['team', 'sites'] as Tab[]).map(t => (
+        {(['team', 'sites', 'content'] as Tab[]).map(t => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -112,7 +146,7 @@ export default function AdminPage() {
               : { borderColor: 'transparent', color: 'var(--muted)' }
             }
           >
-            {t === 'team' ? 'Team' : 'Client Sites'}
+            {t === 'team' ? 'Team' : t === 'sites' ? 'Client Sites' : 'Content'}
           </button>
         ))}
       </div>
@@ -251,6 +285,38 @@ export default function AdminPage() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* CONTENT TAB */}
+      {tab === 'content' && (
+        <div className="space-y-5">
+          <div className="card" style={{ background: 'var(--surface)' }}>
+            <div className="px-5 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
+              <h2 className="font-display font-bold text-sm tracking-widest uppercase" style={{ color: 'var(--muted)' }}>
+                Script Page Important Info
+              </h2>
+              <p className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
+                Appears on the right side of the script page for all users. Supports markdown.
+              </p>
+            </div>
+            <form onSubmit={handleSaveContent} className="px-5 py-5 space-y-4" style={{ background: 'var(--surface2)' }}>
+              <textarea
+                rows={12}
+                value={importantInfo}
+                onChange={e => setImportantInfo(e.target.value)}
+                className="field resize-y font-mono text-sm"
+                placeholder={'## Important\\n- New offer\\n- Team note\\n- Urgent follow-up process'}
+              />
+              {contentMsg && <p className="text-sm" style={{ color: 'var(--accent)' }}>{contentMsg}</p>}
+              {contentError && <p className="text-sm" style={{ color: 'var(--red)' }}>{contentError}</p>}
+              <div className="flex justify-end">
+                <button type="submit" disabled={contentSaving} className="btn-primary">
+                  {contentSaving ? 'Saving…' : 'Save content'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
