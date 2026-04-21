@@ -33,21 +33,24 @@ export default function ScriptPage() {
         .ccs h1 span { color: var(--accent); }
         .ccs .subtitle { color: var(--muted); margin-top: 8px; font-size: 14px; }
         .ccs .pricing { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 40px; }
-        .ccs .price-card { border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; background: var(--surface); }
+        .ccs .price-card { border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; background: var(--surface); transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease; }
+        .ccs .price-card:hover { transform: translateY(-2px); border-color: rgba(110,231,183,0.28); box-shadow: 0 10px 26px rgba(0,0,0,0.24); background: #19191d; }
         .ccs .price-card.featured { border-color: rgba(110,231,183,0.35); background: rgba(110,231,183,0.04); }
         .ccs .price-label { font-family: 'Syne', sans-serif; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
         .ccs .price-label.green { color: var(--accent); }
         .ccs .price-amount { font-family: 'Syne', sans-serif; font-size: 1.9rem; font-weight: 800; color: var(--text); line-height: 1; margin-bottom: 8px; }
         .ccs .price-amount span { font-size: 1rem; color: var(--muted); font-weight: 400; }
         .ccs .price-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
-        .ccs .section { margin-bottom: 28px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+        .ccs .section { margin-bottom: 28px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: transform 170ms ease, border-color 170ms ease, box-shadow 170ms ease; }
+        .ccs .section:hover { transform: translateY(-2px); border-color: rgba(110,231,183,0.2); box-shadow: 0 14px 30px rgba(0,0,0,0.28); }
         .ccs .section-header { display: flex; align-items: center; gap: 12px; padding: 13px 20px; background: var(--surface); border-bottom: 1px solid var(--border); }
         .ccs .step-num { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; color: var(--bg); background: var(--accent); border-radius: 4px; padding: 2px 7px; flex-shrink: 0; }
         .ccs .step-num.warn { background: var(--accent2); }
         .ccs .step-num.info { background: var(--blue); color: #0f0f11; }
         .ccs .section-title { font-family: 'Syne', sans-serif; font-size: 13.5px; font-weight: 700; color: var(--text); }
         .ccs .section-body { padding: 20px 22px; background: #131316; }
-        .ccs .script-block { background: rgba(110,231,183,0.04); border: 1px solid rgba(110,231,183,0.18); border-radius: 8px; padding: 14px 16px; font-size: 15px; line-height: 1.7; margin-bottom: 12px; }
+        .ccs .script-block { background: rgba(110,231,183,0.04); border: 1px solid rgba(110,231,183,0.18); border-radius: 8px; padding: 14px 16px; font-size: 15px; line-height: 1.7; margin-bottom: 12px; transition: border-color 140ms ease, background 140ms ease, transform 140ms ease; }
+        .ccs .script-block:hover { border-color: rgba(110,231,183,0.38); background: rgba(110,231,183,0.08); transform: translateY(-1px); }
         .ccs .script-block:last-child { margin-bottom: 0; }
         .ccs .script-block .lbl { font-family: 'Syne', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 6px; }
         .ccs .script-block em { color: var(--muted); font-style: italic; font-size: 13.5px; }
@@ -73,12 +76,12 @@ export default function ScriptPage() {
       <div className="ccs">
         <div className="container">
           <header>
-            <div className="eyebrow">Cold Call Script — v2</div>
+            <div className="eyebrow">3aIT Outreach Script</div>
             <h1>
-              Keep It <span>Simple</span>
+              Keep It <span>Professional</span>
             </h1>
             <p className="subtitle">
-              Direct, friendly, and to the point — with pricing up front
+              Clear, professional, and to the point - representing 3aIT with confidence
             </p>
           </header>
 
@@ -116,8 +119,9 @@ export default function ScriptPage() {
             <div className="section-body">
               <div className="script-block">
                 <span className="lbl">You say</span>
-                Hey, is that [Business Name]? Hi — is the owner around by any
-                chance?
+                Good morning/afternoon, is that [Business Name]? This is [Your
+                Name] calling from 3aIT - may I speak with the owner for a
+                moment?
               </div>
               <ul className="notes">
                 <li>
@@ -146,9 +150,10 @@ export default function ScriptPage() {
                 <span className="lbl">
                   If you&apos;re speaking to the owner
                 </span>
-                Hi! My name&apos;s [Your Name] — I noticed you don&apos;t have a
-                website and just wanted to reach out quickly. I build websites
-                for local businesses — do you have 2 minutes?
+                Hi, it&apos;s [Your Name] from 3aIT. I noticed your business may
+                be missing a modern website, and I wanted to reach out briefly.
+                We build high-performing websites for local businesses - do you
+                have two minutes?
               </div>
               <div className="script-block">
                 <span className="lbl">
@@ -192,18 +197,17 @@ export default function ScriptPage() {
             <div className="section-body">
               <div className="script-block">
                 <span className="lbl">You say</span>
-                So basically — I make websites for small businesses in the area.
-                Prices start from around{" "}
+                At 3aIT, we build websites for local businesses focused on
+                performance and lead generation. Pricing starts from around{" "}
                 <strong>£500–£800 for a straightforward static site</strong>, or{" "}
-                <strong>£800+ if you need something more interactive</strong> —
-                like online booking, a shop, or a contact form that actually
-                does stuff.
+                <strong>£800+ if you need something more interactive</strong> -
+                such as online booking, ecommerce, or custom enquiry workflows.
                 <br />
                 <br />
-                Either way, I can put together a{" "}
-                <strong>free demo for you within a few days</strong> so you can
-                actually see what it&apos;d look like before you commit to
-                anything.
+                If helpful, I can put together a{" "}
+                <strong>free preview concept within a few days</strong> so you
+                can see what your updated site could look like before making any
+                decision.
               </div>
             </div>
           </div>
@@ -216,10 +220,10 @@ export default function ScriptPage() {
             <div className="section-body">
               <div className="script-block">
                 <span className="lbl">You say</span>
-                Would it be alright if I put something together and gave you a
-                call back in a couple of days to show you what I&apos;ve come up
-                with? Totally free, no obligation — if you like it we can talk,
-                if not, no worries at all.
+                Would you be open to me putting together a short concept and
+                calling you back in a couple of days to walk you through it?
+                It&apos;s completely free and there&apos;s no obligation - if it
+                looks useful, we can discuss next steps.
               </div>
               <ul className="notes">
                 <li>
@@ -326,14 +330,14 @@ export default function ScriptPage() {
             <div className="section-body">
               <div className="script-block">
                 <span className="lbl">If they&apos;re interested</span>
-                Amazing — I&apos;ll get started on something and give you a call
-                back in a couple of days. What&apos;s the best number for you?
-                Cheers, [Name] — speak soon!
+                Great - I&apos;ll prepare something and call you back in a couple
+                of days. What&apos;s the best number for you? Thanks for your
+                time, speak soon.
               </div>
               <div className="script-block">
                 <span className="lbl">If not right now</span>
-                No worries at all — I&apos;ll drop you an email so you&apos;ve
-                got my details. Hope business is going well, cheers!
+                Not a problem at all - I&apos;ll send over a brief email so you
+                have my details from 3aIT. Thanks again for your time.
               </div>
               <ul className="notes">
                 <li>
