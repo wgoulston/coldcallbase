@@ -40,3 +40,30 @@ create trigger cold_calls_updated_at
 -- Index for map queries
 create index cold_calls_lat_lng on cold_calls (lat, lng);
 create index cold_calls_status  on cold_calls (status);
+
+-- Client websites (admin-managed)
+create table client_websites (
+  id            uuid default uuid_generate_v4() primary key,
+  business_name text not null,
+  domain        text,
+  status        text not null default 'in_progress'
+                check (status in ('in_progress','live','maintenance','cancelled')),
+  notes         text,
+  created_at    timestamptz not null default now(),
+  updated_at    timestamptz not null default now()
+);
+
+alter table client_websites enable row level security;
+create policy "admin_all" on client_websites using (
+  (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+) with check (
+  (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+);
+
+create trigger client_websites_updated_at
+  before update on client_websites
+  for each row execute function update_updated_at();
+
+-- Bootstrap: grant admin role to an account (run once)
+-- update auth.users set raw_app_meta_data = raw_app_meta_data || '{"role":"admin"}'
+-- where email = 'your@email.com';

@@ -1,0 +1,31 @@
+import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { NextResponse } from 'next/server'
+
+async function assertAdmin() {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user || (user.app_metadata as Record<string, unknown>)?.role !== 'admin') return null
+  return user
+}
+
+export async function GET() {
+  if (!await assertAdmin()) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+
+  const admin = createAdminClient()
+  const { data, error } = await admin.auth.admin.listUsers()
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  return NextResponse.json(data.users)
+}
+
+export async function POST(request: Request) {
+  if (!await assertAdmin()) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+
+  const { email } = await request.json()
+  if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 })
+
+  const admin = createAdminClient()
+  const { data, error } = await admin.auth.admin.inviteUserByEmail(email)
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  return NextResponse.json(data.user, { status: 201 })
+}

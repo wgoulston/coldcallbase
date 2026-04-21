@@ -29,6 +29,32 @@ export interface ColdCallInsert {
   called_at?: string
 }
 
+export type SiteStatus = 'in_progress' | 'live' | 'maintenance' | 'cancelled'
+
+export const SITE_STATUS_LABELS: Record<SiteStatus, string> = {
+  in_progress: 'In Progress',
+  live:        'Live',
+  maintenance: 'Maintenance',
+  cancelled:   'Cancelled',
+}
+
+export const SITE_STATUS_COLORS: Record<SiteStatus, { bg: string; text: string }> = {
+  in_progress: { bg: 'bg-blue-100',   text: 'text-blue-800'  },
+  live:        { bg: 'bg-green-100',  text: 'text-green-800' },
+  maintenance: { bg: 'bg-amber-100',  text: 'text-amber-800' },
+  cancelled:   { bg: 'bg-gray-100',   text: 'text-gray-600'  },
+}
+
+export interface ClientWebsite {
+  id: string
+  business_name: string
+  domain: string | null
+  status: SiteStatus
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
 export const STATUS_LABELS: Record<CallStatus, string> = {
   pending: 'Pending',
   interested: 'Interested',

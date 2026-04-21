@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
@@ -14,13 +14,22 @@ export default function Navbar() {
   const pathname   = usePathname()
   const router     = useRouter()
   const supabase   = createClient()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen]     = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setIsAdmin((user?.app_metadata as Record<string, unknown>)?.role === 'admin')
+    })
+  }, [supabase])
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     router.push('/login')
     router.refresh()
   }
+
+  const allLinks = isAdmin ? [...links, { href: '/admin', label: 'Admin' }] : links
 
   return (
     <nav className="fixed top-0 inset-x-0 z-50 bg-white border-b border-gray-200">
@@ -34,7 +43,7 @@ export default function Navbar() {
           </Link>
 
           <div className="hidden sm:flex items-center gap-1">
-            {links.map(({ href, label }) => (
+            {allLinks.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
@@ -76,7 +85,7 @@ export default function Navbar() {
 
       {open && (
         <div className="sm:hidden border-t border-gray-100 bg-white px-4 py-3 space-y-1 shadow-md">
-          {links.map(({ href, label }) => (
+          {allLinks.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
