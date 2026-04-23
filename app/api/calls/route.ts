@@ -1,9 +1,10 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
-import type { CallStatus } from '@/lib/types'
+import type { CallLikelihood, CallStatus } from '@/lib/types'
 import { isInterestedOrCallback, sendCallStatusDiscordNotification } from '@/lib/notifications/discord'
 
 const VALID_STATUSES: CallStatus[] = ['pending', 'interested', 'not_interested', 'callback', 'closed']
+const VALID_LIKELIHOODS: CallLikelihood[] = ['likely', 'unlikely']
 
 export async function GET() {
   const supabase = createClient()
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
 
   const body = await request.json()
 
-  const { business_name, address, phone, website, lat, lng, status, notes, called_at, follow_up_at } = body
+  const { business_name, address, phone, website, lat, lng, status, likelihood, notes, called_at, follow_up_at } = body
 
   if (!business_name || typeof business_name !== 'string' || !business_name.trim())
     return NextResponse.json({ error: 'business_name is required' }, { status: 400 })
@@ -36,6 +37,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'lat and lng must be numbers' }, { status: 400 })
   if (status && !VALID_STATUSES.includes(status))
     return NextResponse.json({ error: 'Invalid status value' }, { status: 400 })
+  if (likelihood !== undefined && likelihood !== null && !VALID_LIKELIHOODS.includes(likelihood))
+    return NextResponse.json({ error: 'Invalid likelihood value' }, { status: 400 })
 
   const { data, error } = await supabase
     .from('cold_calls')
@@ -47,6 +50,7 @@ export async function POST(request: Request) {
       lat,
       lng,
       status: status ?? 'pending',
+      likelihood: likelihood ?? null,
       notes: notes ? String(notes).trim() : null,
       called_at: called_at ?? undefined,
       follow_up_at: follow_up_at ?? null,

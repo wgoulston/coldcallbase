@@ -1,4 +1,5 @@
 export type CallStatus = 'pending' | 'interested' | 'not_interested' | 'callback' | 'closed'
+export type CallLikelihood = 'likely' | 'unlikely'
 
 export interface ColdCall {
   id: string
@@ -10,6 +11,7 @@ export interface ColdCall {
   lat: number
   lng: number
   status: CallStatus
+  likelihood: CallLikelihood | null
   notes: string | null
   called_at: string
   follow_up_at: string | null
@@ -26,6 +28,7 @@ export interface ColdCallInsert {
   lat: number
   lng: number
   status: CallStatus
+  likelihood?: CallLikelihood | null
   notes?: string
   called_at?: string
   follow_up_at?: string | null

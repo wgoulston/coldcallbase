@@ -11,6 +11,8 @@ create table cold_calls (
   lng          double precision not null,
   status       text not null default 'pending'
                check (status in ('pending','interested','not_interested','callback','closed')),
+  likelihood   text
+               check (likelihood in ('likely','unlikely')),
   website           text,
   created_by_email  text,
   notes             text,

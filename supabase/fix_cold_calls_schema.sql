@@ -7,6 +7,7 @@ alter table if exists public.cold_calls
   add column if not exists website text,
   add column if not exists created_by_email text,
   add column if not exists notes text,
+  add column if not exists likelihood text,
   add column if not exists called_at timestamptz not null default now(),
   add column if not exists follow_up_at timestamptz,
   add column if not exists created_by uuid;
@@ -21,6 +22,19 @@ begin
     alter table public.cold_calls
       add constraint cold_calls_created_by_fkey
       foreign key (created_by) references auth.users(id) on delete set null;
+  end if;
+end $$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'cold_calls_likelihood_check'
+  ) then
+    alter table public.cold_calls
+      add constraint cold_calls_likelihood_check
+      check (likelihood in ('likely','unlikely'));
   end if;
 end $$;
 

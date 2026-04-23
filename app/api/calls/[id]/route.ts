@@ -1,9 +1,10 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
-import type { CallStatus } from '@/lib/types'
+import type { CallLikelihood, CallStatus } from '@/lib/types'
 import { isInterestedOrCallback, sendCallStatusDiscordNotification } from '@/lib/notifications/discord'
 
 const VALID_STATUSES: CallStatus[] = ['pending', 'interested', 'not_interested', 'callback', 'closed']
+const VALID_LIKELIHOODS: CallLikelihood[] = ['likely', 'unlikely']
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
   const supabase = createClient()
@@ -11,7 +12,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await request.json()
-  const { business_name, address, phone, website, lat, lng, status, notes, called_at, follow_up_at } = body
+  const { business_name, address, phone, website, lat, lng, status, likelihood, notes, called_at, follow_up_at } = body
 
   if (business_name !== undefined && (typeof business_name !== 'string' || !business_name.trim()))
     return NextResponse.json({ error: 'business_name must be a non-empty string' }, { status: 400 })
@@ -23,6 +24,8 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     return NextResponse.json({ error: 'lng must be a number' }, { status: 400 })
   if (status !== undefined && !VALID_STATUSES.includes(status))
     return NextResponse.json({ error: 'Invalid status value' }, { status: 400 })
+  if (likelihood !== undefined && likelihood !== null && !VALID_LIKELIHOODS.includes(likelihood))
+    return NextResponse.json({ error: 'Invalid likelihood value' }, { status: 400 })
 
   const { data: existingCall, error: existingError } = await supabase
     .from('cold_calls')
@@ -42,6 +45,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   if (lat !== undefined)           patch.lat = lat
   if (lng !== undefined)           patch.lng = lng
   if (status !== undefined)        patch.status = status
+  if (likelihood !== undefined)    patch.likelihood = likelihood
   if (notes !== undefined)         patch.notes = notes ? String(notes).trim() : null
   if (called_at !== undefined)     patch.called_at = called_at
   if (follow_up_at !== undefined)  patch.follow_up_at = follow_up_at

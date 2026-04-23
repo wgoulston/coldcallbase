@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { CallStatus, ColdCall, STATUS_LABELS } from '@/lib/types'
+import { CallLikelihood, CallStatus, ColdCall, STATUS_LABELS } from '@/lib/types'
 
 interface PlacePreset {
   business_name: string
@@ -20,6 +20,10 @@ interface Props {
 }
 
 const STATUSES: CallStatus[] = ['pending', 'interested', 'not_interested', 'callback', 'closed']
+const LIKELIHOODS: { value: CallLikelihood; label: string }[] = [
+  { value: 'likely', label: 'Likely' },
+  { value: 'unlikely', label: 'Unlikely' },
+]
 
 const empty = {
   business_name: '',
@@ -29,6 +33,7 @@ const empty = {
   lat: 0,
   lng: 0,
   status: 'pending' as CallStatus,
+  likelihood: null as CallLikelihood | null,
   notes: '',
   called_at: new Date().toISOString().slice(0, 16),
   follow_up_at: '',
@@ -51,6 +56,7 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
         lat:           existing.lat,
         lng:           existing.lng,
         status:        existing.status,
+        likelihood:    existing.likelihood ?? null,
         notes:         existing.notes ?? '',
         called_at:     existing.called_at.slice(0, 16),
         follow_up_at:  existing.follow_up_at ? existing.follow_up_at.slice(0, 16) : '',
@@ -84,6 +90,7 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
       phone:   form.phone   || null,
       website: form.website || null,
       notes:   form.notes   || null,
+      likelihood: form.likelihood ?? null,
     }
 
     const url    = existing ? `/api/calls/${existing.id}` : '/api/calls'
@@ -167,19 +174,32 @@ export default function CallModal({ open, onClose, onSaved, existing, preset }: 
               </select>
             </div>
             <div>
-              <label className={lbl} style={{ color: 'var(--muted)' }}>Called at</label>
-              <input type="datetime-local" value={form.called_at} onChange={e => setForm(f => ({ ...f, called_at: e.target.value }))} className="field" />
+              <label className={lbl} style={{ color: 'var(--muted)' }}>Pre-call fit</label>
+              <select
+                value={form.likelihood ?? ''}
+                onChange={e => setForm(f => ({ ...f, likelihood: (e.target.value || null) as CallLikelihood | null }))}
+                className="field"
+              >
+                <option value="">Unmarked</option>
+                {LIKELIHOODS.map(l => <option key={l.value} value={l.value}>{l.label}</option>)}
+              </select>
             </div>
           </div>
 
-          <div>
-            <label className={lbl} style={{ color: 'var(--muted)' }}>Follow-up date</label>
-            <input
-              type="datetime-local"
-              value={form.follow_up_at}
-              onChange={e => setForm(f => ({ ...f, follow_up_at: e.target.value }))}
-              className="field"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className={lbl} style={{ color: 'var(--muted)' }}>Called at</label>
+              <input type="datetime-local" value={form.called_at} onChange={e => setForm(f => ({ ...f, called_at: e.target.value }))} className="field" />
+            </div>
+            <div>
+              <label className={lbl} style={{ color: 'var(--muted)' }}>Follow-up date</label>
+              <input
+                type="datetime-local"
+                value={form.follow_up_at}
+                onChange={e => setForm(f => ({ ...f, follow_up_at: e.target.value }))}
+                className="field"
+              />
+            </div>
           </div>
 
           <div>

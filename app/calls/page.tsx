@@ -14,6 +14,22 @@ function formatDateTime(iso: string) {
   return new Date(iso).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })
 }
 
+function renderLikelihood(likelihood: 'likely' | 'unlikely' | null) {
+  if (!likelihood) return <span style={{ color: 'var(--border)' }}>—</span>
+  const isLikely = likelihood === 'likely'
+  return (
+    <span
+      className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold"
+      style={{
+        color: isLikely ? 'var(--accent)' : 'var(--red)',
+        background: isLikely ? 'rgba(251,191,36,0.14)' : 'rgba(248,113,113,0.14)',
+      }}
+    >
+      {isLikely ? 'Likely' : 'Unlikely'}
+    </span>
+  )
+}
+
 const th = 'text-left px-4 py-3 text-xs font-display font-bold tracking-widest uppercase'
 
 export default function CallsPage() {
@@ -37,7 +53,8 @@ export default function CallsPage() {
     const matchSearch = search === '' ||
       c.business_name.toLowerCase().includes(search.toLowerCase()) ||
       c.address.toLowerCase().includes(search.toLowerCase()) ||
-      (c.notes ?? '').toLowerCase().includes(search.toLowerCase())
+      (c.notes ?? '').toLowerCase().includes(search.toLowerCase()) ||
+      (c.likelihood ?? '').toLowerCase().includes(search.toLowerCase())
     return matchStatus && matchSearch
   })
 
@@ -114,6 +131,7 @@ export default function CallsPage() {
                     </div>
                     <StatusBadge status={call.status as CallStatus} />
                   </div>
+                  <div className="text-xs">{renderLikelihood(call.likelihood)}</div>
                   <div className="flex items-center justify-between text-xs" style={{ color: 'var(--muted)' }}>
                     {call.phone
                       ? <a href={`tel:${call.phone}`} onClick={e => e.stopPropagation()} style={{ color: 'var(--accent)' }}>{call.phone}</a>
@@ -142,6 +160,7 @@ export default function CallsPage() {
                     <th className={th} style={{ color: 'var(--muted)' }}>Address</th>
                     <th className={th} style={{ color: 'var(--muted)' }}>Phone</th>
                     <th className={th} style={{ color: 'var(--muted)' }}>Status</th>
+                    <th className={th} style={{ color: 'var(--muted)' }}>Fit</th>
                     <th className={th} style={{ color: 'var(--muted)' }}>Called</th>
                     <th className={th} style={{ color: 'var(--muted)' }}>Follow-up</th>
                     <th className={th} style={{ color: 'var(--muted)' }}>Website</th>
@@ -170,6 +189,9 @@ export default function CallsPage() {
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap">
                         <StatusBadge status={call.status as CallStatus} />
+                      </td>
+                      <td className="px-4 py-4 whitespace-nowrap">
+                        {renderLikelihood(call.likelihood)}
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-xs" style={{ color: 'var(--muted)' }}>
                         {formatDate(call.called_at)}
