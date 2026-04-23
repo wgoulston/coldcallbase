@@ -152,19 +152,16 @@ export default function CallsPage() {
             </div>
 
             {/* Desktop table */}
-            <div className="hidden sm:block overflow-x-auto">
-              <table className="w-full text-sm">
+            <div className="hidden sm:block">
+              <table className="w-full text-sm table-fixed">
                 <thead>
                   <tr style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
                     <th className={th} style={{ color: 'var(--muted)' }}>Business</th>
                     <th className={th} style={{ color: 'var(--muted)' }}>Address</th>
-                    <th className={th} style={{ color: 'var(--muted)' }}>Phone</th>
                     <th className={th} style={{ color: 'var(--muted)' }}>Status</th>
                     <th className={th} style={{ color: 'var(--muted)' }}>Fit</th>
-                    <th className={th} style={{ color: 'var(--muted)' }}>Called</th>
-                    <th className={th} style={{ color: 'var(--muted)' }}>Follow-up</th>
-                    <th className={th} style={{ color: 'var(--muted)' }}>Website</th>
-                    <th className={th} style={{ color: 'var(--muted)' }}>Logged by</th>
+                    <th className={th} style={{ color: 'var(--muted)' }}>Activity</th>
+                    <th className={`${th} hidden xl:table-cell`} style={{ color: 'var(--muted)' }}>Website</th>
                     <th className="px-4 py-3" />
                   </tr>
                 </thead>
@@ -176,30 +173,32 @@ export default function CallsPage() {
                       style={{ borderTop: i > 0 ? '1px solid var(--border)' : undefined }}
                       onClick={() => openEdit(call)}
                     >
-                      <td className="px-4 py-4 font-medium max-w-[180px] truncate" style={{ color: 'var(--text)' }}>
-                        {call.business_name}
+                      <td className="px-4 py-4 align-top">
+                        <p className="font-medium truncate" style={{ color: 'var(--text)' }}>{call.business_name}</p>
+                        <div className="text-xs mt-1 truncate" style={{ color: 'var(--muted)' }}>
+                          {call.phone
+                            ? <a href={`tel:${call.phone}`} onClick={e => e.stopPropagation()} style={{ color: 'var(--accent)' }}>{call.phone}</a>
+                            : <span style={{ color: 'var(--border)' }}>No phone</span>}
+                        </div>
                       </td>
-                      <td className="px-4 py-4 max-w-[200px] truncate" style={{ color: 'var(--muted)' }}>
+                      <td className="px-4 py-4 max-w-[220px] truncate align-top" style={{ color: 'var(--muted)' }}>
                         {call.address}
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap" onClick={e => e.stopPropagation()}>
-                        {call.phone
-                          ? <a href={`tel:${call.phone}`} style={{ color: 'var(--accent)' }}>{call.phone}</a>
-                          : <span style={{ color: 'var(--border)' }}>—</span>}
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap">
+                      <td className="px-4 py-4 whitespace-nowrap align-top">
                         <StatusBadge status={call.status as CallStatus} />
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap">
+                      <td className="px-4 py-4 whitespace-nowrap align-top">
                         {renderLikelihood(call.likelihood)}
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-xs" style={{ color: 'var(--muted)' }}>
-                        {formatDate(call.called_at)}
+                      <td className="px-4 py-4 align-top">
+                        <p className="text-xs whitespace-nowrap" style={{ color: 'var(--muted)' }}>
+                          Called: {formatDate(call.called_at)}
+                        </p>
+                        <p className="text-xs whitespace-nowrap mt-1" style={{ color: call.follow_up_at ? 'var(--accent)' : 'var(--border)' }}>
+                          Follow-up: {call.follow_up_at ? formatDate(call.follow_up_at) : '—'}
+                        </p>
                       </td>
-                      <td className="px-4 py-4 whitespace-nowrap text-xs" style={{ color: call.follow_up_at ? 'var(--accent)' : 'var(--border)' }}>
-                        {call.follow_up_at ? formatDate(call.follow_up_at) : '—'}
-                      </td>
-                      <td className="px-4 py-4 whitespace-nowrap max-w-[160px]" onClick={e => e.stopPropagation()}>
+                      <td className="px-4 py-4 whitespace-nowrap max-w-[160px] hidden xl:table-cell align-top" onClick={e => e.stopPropagation()}>
                         {call.website ? (
                           <a href={call.website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs truncate max-w-full" style={{ color: 'var(--blue)' }}>
                             <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -211,10 +210,7 @@ export default function CallsPage() {
                           <span className="text-xs italic" style={{ color: 'var(--border)' }}>None</span>
                         )}
                       </td>
-                      <td className="px-4 py-4 text-xs max-w-[160px] truncate" style={{ color: 'var(--muted)' }}>
-                        {call.created_by_email ?? <span style={{ color: 'var(--border)' }}>—</span>}
-                      </td>
-                      <td className="px-4 py-4" onClick={e => e.stopPropagation()}>
+                      <td className="px-4 py-4 align-top" onClick={e => e.stopPropagation()}>
                         <button onClick={() => openEdit(call)} className="text-xs font-medium" style={{ color: 'var(--accent)' }}>
                           Edit
                         </button>
