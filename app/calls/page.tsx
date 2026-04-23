@@ -152,8 +152,17 @@ export default function CallsPage() {
             </div>
 
             {/* Desktop table */}
-            <div className="hidden sm:block">
-              <table className="w-full text-sm table-fixed">
+            <div className="hidden sm:block w-full">
+              <table className="w-full min-w-full text-sm">
+                <colgroup>
+                  <col className="w-[18%]" />
+                  <col className="w-[22%]" />
+                  <col className="w-[14%]" />
+                  <col className="w-[12%]" />
+                  <col className="w-[20%]" />
+                  <col className="w-[10%]" />
+                  <col className="w-[4%]" />
+                </colgroup>
                 <thead>
                   <tr style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
                     <th className={th} style={{ color: 'var(--muted)' }}>Business</th>
